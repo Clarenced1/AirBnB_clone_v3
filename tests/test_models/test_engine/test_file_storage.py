@@ -18,6 +18,7 @@ import json
 import os
 import pep8
 import unittest
+from models import storage
 FileStorage = file_storage.FileStorage
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
@@ -139,3 +140,20 @@ class TestFileStorage(unittest.TestCase):
         storage.new(state)
         state_id = state.to_dict()['id']
         self.assertTrue(storage.get(State, state_id) is state)
+
+    def test_file_storage_get(self):
+        """Test FileStorage's get method"""
+        storage.reload()
+        state = State(name="California")
+        storage.new(state)
+        storage.save()
+        state_id = state.id
+        self.assertEqual(storage.get(State, state_id), state)
+        self.assertIsNone(storage.get(State, "invalid_id"))
+
+    def test_file_storage_count(self):
+        """Test FileStorage's count method"""
+        storage.reload()
+        self.assertEqual(storage.count(), len(storage.all()))
+        self.assertEqual(storage.count(State), len(storage.all(State)))
+        self.assertEqual(storage.count(User), len(storage.all(User)))
