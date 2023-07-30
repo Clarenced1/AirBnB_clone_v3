@@ -159,7 +159,7 @@ Jennifer Huang - [Github](https://github.com/jhuang10123) / [Twitter](https://tw
 
 ## Authors - AirBnB_clone_v3
 
-Tonny Kirwa - [Github](https://github.com/tkirwa) / [Twitter](https://twitter.com/tonnykirwa)
+Tonny Kirwa - [Github](https://github.com/tkirwa) / [Twitter](https://twitter.com/tonnykirwa)  
 Clarence Ogiesoba-Eguakun - [Github](https://github.com/Clarenced1) / [Twitter](https://twitter.com/clarence_boy)
 
 ## License
