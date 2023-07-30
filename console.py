@@ -62,10 +62,10 @@ class HBNBCommand(cmd.Cmd):
         else:
             kwargs = {}
             for arg in args[1:]:
-                match = re.fullmatch('(?P<key>[a-zA-Z_]\w*)=(?:'
-                                     '(?P<int>\d+)|'
-                                     '(?P<float>\d*\.\d*)|'
-                                     '(?P<string>.*))',
+                match = re.fullmatch(r'(?P<key>[a-zA-Z_]\w*)=(?:'
+                                     r'(?P<int>\d+)|'
+                                     r'(?P<float>\d*\.\d*)|'
+                                     r'(?P<string>.*))',
                                      arg)
                 match = match.groupdict()
                 if match['string']:
