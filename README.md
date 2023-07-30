@@ -153,17 +153,14 @@ EOF  all  create  destroy  help  quit  show  update
 ## Bugs
 No known bugs at this time. 
 
-## Authors - 
+## Authors - AirBnB_clone_v2
 Alexa Orrico - [Github](https://github.com/alexaorrico) / [Twitter](https://twitter.com/alexa_orrico)  
 Jennifer Huang - [Github](https://github.com/jhuang10123) / [Twitter](https://twitter.com/earthtojhuang)
+
+## Authors - AirBnB_clone_v3
 
 Tonny Kirwa - [Github](https://github.com/tkirwa) / [Twitter](https://twitter.com/tonnykirwa)
 Clarence Ogiesoba-Eguakun - [Github](https://github.com/Clarenced1) / [Twitter](https://twitter.com/clarence_boy)
 
 ## License
 Public Domain. No copy write protection. 
-
-
-0x05. AirBnB clone - RESTful API
-done by 
-Clarence
