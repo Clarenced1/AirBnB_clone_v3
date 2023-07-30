@@ -29,7 +29,7 @@ article {
 	flex-direction: row;
 	position: relative;
 
-	height: 80px;	
+	height: 80px;
 	width: 100%;
 }
 
@@ -74,7 +74,7 @@ article {
 
 .user {
 	margin-top: 5px;
-	margin-bottom: 5px;	
+	margin-bottom: 5px;
 }
 
 .description {
