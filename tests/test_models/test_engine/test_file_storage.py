@@ -3,22 +3,25 @@
 Contains the TestFileStorageDocs classes
 """
 
-from datetime import datetime
 import inspect
+import json
+import os
+import unittest
+from datetime import datetime
+
+import pep8
+
 import models
-from models.engine import file_storage
+from models import storage
 from models.amenity import Amenity
 from models.base_model import BaseModel
 from models.city import City
+from models.engine import file_storage
 from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
-import json
-import os
-import pep8
-import unittest
-from models import storage
+
 FileStorage = file_storage.FileStorage
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
@@ -114,46 +117,3 @@ class TestFileStorage(unittest.TestCase):
         with open("file.json", "r") as f:
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
-
-    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
-    def test_count(self):
-        """Test that count method returns accurate count of objects"""
-        storage = FileStorage()
-        # clear objects from storage
-        FileStorage._FileStorage__objects.clear()
-        storage.save()
-        # create new object of each class
-        for key, value in classes.items():
-            instance = value()
-            instance_key = instance.__class__.__name__ + "." + instance.id
-            FileStorage._FileStorage__objects[instance_key] = instance
-        storage.save()
-        self.assertEqual(storage.count(), 7)
-
-    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
-    def test_get(self):
-        """Test that count method returns object by valid id"""
-        storage = FileStorage()
-        storage.save()
-        # create new object
-        state = State()
-        storage.new(state)
-        state_id = state.to_dict()['id']
-        self.assertTrue(storage.get(State, state_id) is state)
-
-    def test_file_storage_get(self):
-        """Test FileStorage's get method"""
-        storage.reload()
-        state = State(name="California")
-        storage.new(state)
-        storage.save()
-        state_id = state.id
-        self.assertEqual(storage.get(State, state_id), state)
-        self.assertIsNone(storage.get(State, "invalid_id"))
-
-    def test_file_storage_count(self):
-        """Test FileStorage's count method"""
-        storage.reload()
-        self.assertEqual(storage.count(), len(storage.all()))
-        self.assertEqual(storage.count(State), len(storage.all(State)))
-        self.assertEqual(storage.count(User), len(storage.all(User)))

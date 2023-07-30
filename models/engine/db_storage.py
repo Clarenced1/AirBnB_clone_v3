@@ -11,6 +11,14 @@ from models.user import User
 from models.place import Place
 from models.review import Review
 from models.amenity import Amenity
+name2class = {
+    'Amenity': Amenity,
+    'City': City,
+    'Place': Place,
+    'State': State,
+    'Review': Review,
+    'User': User
+}
 
 
 class DBStorage:
@@ -82,20 +90,3 @@ class DBStorage:
         """ calls remove()
         """
         self.__session.close()
-
-    def get(self, cls, id):
-        """Returns the object based on the class and its ID, or None
-          if not found"""
-        if cls and id:
-            key = "{}.{}".format(cls.__name__, id)
-            return self.__session.query(cls).get(key)
-        return None
-
-    def count(self, cls=None):
-        """Returns the number of objects in storage matching the given class.
-        If no class is passed, returns the count of all objects in storage.
-        """
-        if cls:
-            return self.__session.query(cls).count()
-        return sum(self.__session.query(cls).count() for
-                   cls in [State, City, User, Place, Review, Amenity])

@@ -9,6 +9,8 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 import shlex
+classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
+           "Place": Place, "Review": Review, "State": State, "User": User}
 
 
 class FileStorage:
@@ -78,29 +80,3 @@ class FileStorage:
         """ calls reload()
         """
         self.reload()
-
-    def get(self, cls, id):
-        '''
-        gets an object
-        Args:
-            cls (str): class name
-            id (str): object ID
-        Returns:
-            an object based on class name and its ID
-        '''
-        key = "{}.{}".format(cls.__name__, id)
-        return self.__objects.get(key, None)
-
-    def count(self, cls=None):
-        '''
-        counts number of objects in a class (if given)
-        Args:
-            cls (str): class name
-        Returns:
-            number of objects in class, if no class name given
-            return total number of objects in database
-        '''
-        if cls:
-            return len(self.all(cls))
-        else:
-            return len(self.all())
