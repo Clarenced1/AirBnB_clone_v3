@@ -55,7 +55,7 @@ def insert_place(city_id):
     if city is None:
         abort(404)
     res = request.get_json()
-    if type(res) != dict:
+    if not isinstance(res, dict):
         abort(400, description="Not a JSON")
     if not res.get("user_id"):
         abort(400, description="Missing user_id")
@@ -74,9 +74,9 @@ def insert_place(city_id):
                  strict_slashes=False)
 @swag_from('documentation/place/put_place.yml', methods=['PUT'])
 def places_search():
-    """Retrieves all Place objects depending of the body of the request"""
+    """Retrieves all Place objects depending on the body of the request"""
     body = request.get_json()
-    if type(body) != dict:
+    if not isinstance(body, dict):
         abort(400, description="Not a JSON")
     id_states = body.get("states", [])
     id_cities = body.get("cities", [])
@@ -85,22 +85,16 @@ def places_search():
     if id_states == id_cities == []:
         places = storage.all(Place).values()
     else:
-        states = [
-            storage.get(State, _id) for _id in id_states
-            if storage.get(State, _id)
-        ]
+        states = [storage.get(State, _id) for _id in id_states
+                  if storage.get(State, _id)]
         cities = [city for state in states for city in state.cities]
-        cities += [
-            storage.get(City, _id) for _id in id_cities
-            if storage.get(City, _id)
-        ]
+        cities += [storage.get(City, _id) for _id in id_cities
+                   if storage.get(City, _id)]
         cities = list(set(cities))
         places = [place for city in cities for place in city.places]
 
-    amenities = [
-        storage.get(Amenity, _id) for _id in id_amenities
-        if storage.get(Amenity, _id)
-    ]
+    amenities = [storage.get(Amenity, _id) for _id in id_amenities
+                 if storage.get(Amenity, _id)]
 
     res = []
     for place in places:
@@ -122,7 +116,7 @@ def update_place(place_id):
     if place is None:
         abort(404)
     res = request.get_json()
-    if type(res) != dict:
+    if not isinstance(res, dict):
         abort(400, description="Not a JSON")
     for key, value in res.items():
         if key not in ["id", "user_id", "city_id", "created_at", "updated_at"]:
