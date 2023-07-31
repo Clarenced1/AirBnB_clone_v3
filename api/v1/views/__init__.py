@@ -1,15 +1,11 @@
-#!/usr/bin/python3
-"""This module define a blueprint for routes with Blueprint object"""
 from flask import Blueprint
 
+# Create a Blueprint instance
+v1 = Blueprint('v1', __name__, url_prefix='/api/v1')
 
-app_views = Blueprint("app_views", __name__, url_prefix='/api/v1')
+# Import views here (example):
+# from api.v1.views.some_view import SomeViewClass
 
-from api.v1.views.index import *
-from api.v1.views.states import *
-from api.v1.views.cities import *
-from api.v1.views.amenities import *
-from api.v1.views.users import *
-from api.v1.views.places import *
-from api.v1.views.places_reviews import *
-from api.v1.views.places_amenities import *
+# Register the views (example):
+# v1.add_url_rule('/some_endpoint', view_func=SomeViewClass.as_view
+# ('some_endpoint'))
