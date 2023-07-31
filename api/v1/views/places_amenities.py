@@ -3,12 +3,10 @@
 import os
 from api.v1.views import app_views
 
-from flask import abort, jsonify, make_response, request, Blueprint
+from flask import abort, jsonify, make_response, request
 from models import storage
 from models.amenity import Amenity
 from models.place import Place
-
-app_views = Blueprint("app_views", __name__, url_prefix='/api/v1')
 
 
 @app_views.route('/places/<string:place_id>/amenities', methods=['GET'],

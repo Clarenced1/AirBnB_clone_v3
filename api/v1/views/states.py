@@ -2,11 +2,9 @@
 """states.py"""
 
 from api.v1.views import app_views
-from flask import abort, jsonify, make_response, request, Blueprint
+from flask import abort, jsonify, make_response, request
 from models import storage
 from models.state import State
-
-app_views = Blueprint("app_views", __name__, url_prefix='/api/v1')
 
 
 @app_views.route('/states', methods=['GET'], strict_slashes=False)
