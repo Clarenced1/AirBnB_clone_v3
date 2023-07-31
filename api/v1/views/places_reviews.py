@@ -2,11 +2,13 @@
 """reviews.py"""
 
 from api.v1.views import app_views
-from flask import abort, jsonify, make_response, request
+from flask import abort, jsonify, make_response, request, Blueprint
 from models import storage
 from models.review import Review
 from models.user import User
 from models.place import Place
+
+app_views = Blueprint("app_views", __name__, url_prefix='/api/v1')
 
 
 @app_views.route('/places/<string:place_id>/reviews', methods=['GET'],

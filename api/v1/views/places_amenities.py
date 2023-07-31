@@ -2,10 +2,13 @@
 """places_amenities.py"""
 import os
 from api.v1.views import app_views
-from flask import abort, jsonify, make_response, request
+
+from flask import abort, jsonify, make_response, request, Blueprint
 from models import storage
 from models.amenity import Amenity
 from models.place import Place
+
+app_views = Blueprint("app_views", __name__, url_prefix='/api/v1')
 
 
 @app_views.route('/places/<string:place_id>/amenities', methods=['GET'],
@@ -60,4 +63,4 @@ def post_place_amenity(place_id, amenity_id):
         return jsonify(amenity.to_dict())
     place_amenities.append(amenity)
     place.save()
-    return make_response(jsonify(amenityto_dict()), 201)
+    return make_response(jsonify(amenity.to_dict()), 201)

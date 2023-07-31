@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """This module implement a rule that return a view"""
-from flask import jsonify, abort, request
+from flask import jsonify, abort, request, Blueprint
 from models import storage
 from api.v1.views import app_views
 from models.city import City
@@ -9,6 +9,8 @@ from models.user import User
 from models.state import State
 from models.amenity import Amenity
 from flasgger.utils import swag_from
+
+app_views = Blueprint("app_views", __name__, url_prefix='/api/v1')
 
 
 @app_views.route("/cities/<city_id>/places", methods=["GET"],

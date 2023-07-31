@@ -4,6 +4,8 @@ from api.v1.views import app_views
 from flask import Flask, Blueprint, jsonify
 from models import storage
 
+app_views = Blueprint("app_views", __name__, url_prefix='/api/v1')
+
 
 hbnbText = {
     "amenities": "Amenity",

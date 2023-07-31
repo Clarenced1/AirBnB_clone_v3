@@ -2,9 +2,11 @@
 """states.py"""
 
 from api.v1.views import app_views
-from flask import abort, jsonify, make_response, request
+from flask import abort, jsonify, make_response, request, Blueprint
 from models import storage
 from models.amenity import Amenity
+
+app_views = Blueprint("app_views", __name__, url_prefix='/api/v1')
 
 
 @app_views.route('/amenities', methods=['GET'], strict_slashes=False)
