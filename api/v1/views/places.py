@@ -22,7 +22,8 @@ def place_by_city(city_id):
     return jsonify([place.to_dict() for place in city.places])
 
 
-@app_views.route("/places/<place_id>", methods=["GET"], strict_slashes=False)
+@app_views.route("/places/<place_id>", methods=["GET"],
+                 strict_slashes=False)
 @swag_from('documentation/place/get_place.yml', methods=['GET'])
 def show_place(place_id):
     """Endpoint that return a Place object"""
@@ -54,7 +55,7 @@ def insert_place(city_id):
     if city is None:
         abort(404)
     res = request.get_json()
-    if not isinstance(res, dict):
+    if type(res) != dict:
         abort(400, description="Not a JSON")
     if not res.get("user_id"):
         abort(400, description="Missing user_id")
@@ -69,12 +70,13 @@ def insert_place(city_id):
     return jsonify(new_place.to_dict()), 201
 
 
-@app_views.route("/places_search", methods=["POST"], strict_slashes=False)
+@app_views.route("/places_search", methods=["POST"],
+                 strict_slashes=False)
 @swag_from('documentation/place/put_place.yml', methods=['PUT'])
 def places_search():
-    """Retrieves all Place objects depending on the body of the request"""
+    """Retrieves all Place objects depending of the body of the request"""
     body = request.get_json()
-    if not isinstance(body, dict):
+    if type(body) != dict:
         abort(400, description="Not a JSON")
     id_states = body.get("states", [])
     id_cities = body.get("cities", [])
@@ -111,7 +113,8 @@ def places_search():
     return jsonify(res)
 
 
-@app_views.route("/places/<place_id>", methods=["PUT"], strict_slashes=False)
+@app_views.route("/places/<place_id>", methods=["PUT"],
+                 strict_slashes=False)
 @swag_from('documentation/place/post_search.yml', methods=['POST'])
 def update_place(place_id):
     """Endpoint that update a Place object"""
@@ -119,7 +122,7 @@ def update_place(place_id):
     if place is None:
         abort(404)
     res = request.get_json()
-    if not isinstance(res, dict):
+    if type(res) != dict:
         abort(400, description="Not a JSON")
     for key, value in res.items():
         if key not in ["id", "user_id", "city_id", "created_at", "updated_at"]:
