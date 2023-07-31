@@ -13,6 +13,8 @@ from models.review import Review
 from models.user import User
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
+
+# Dictionary mapping class names to their corresponding classes
 name2class = {
     'Amenity': Amenity,
     'City': City,
@@ -30,22 +32,26 @@ class DBStorage:
 
     def __init__(self):
         """Initializes the object"""
+        # Fetching the database credentials from environment variables
         user = os.getenv('HBNB_MYSQL_USER')
         passwd = os.getenv('HBNB_MYSQL_PWD')
         host = os.getenv('HBNB_MYSQL_HOST')
         database = os.getenv('HBNB_MYSQL_DB')
+
+        # Creating the database engine using SQLAlchemy
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
                                       .format(user, passwd, host, database))
+
+        # Drop all tables if the environment is 'test'
         if os.getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """returns a dictionary of all the objects present"""
+        """Returns a dictionary of all the objects present"""
         if not self.__session:
             self.reload()
         objects = {}
-        if cls is not None and type(cls) is str and id is not None and \
-                type(id) is str and cls in name2class:
+        if isinstance(cls, str):
             cls = name2class.get(cls, None)
         if cls:
             for obj in self.__session.query(cls):
@@ -57,44 +63,48 @@ class DBStorage:
         return objects
 
     def reload(self):
-        """reloads objects from the database"""
+        """Reloads objects from the database"""
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
         Base.metadata.create_all(self.__engine)
         self.__session = scoped_session(session_factory)
 
     def new(self, obj):
-        """creates a new object"""
+        """Creates a new object"""
         self.__session.add(obj)
 
     def save(self):
-        """saves the current session"""
+        """Saves the current session"""
         self.__session.commit()
 
     def delete(self, obj=None):
-        """deletes an object"""
+        """Deletes an object"""
         if not self.__session:
             self.reload()
         if obj:
             self.__session.delete(obj)
 
     def close(self):
-        """Dispose of current session if active"""
+        """Dispose of the current session if active"""
         self.__session.remove()
 
     def get(self, cls, id):
-        """Retrieve an object"""
-        if cls and isinstance(cls, str) and id and isinstance(id, str):
-            cls = name2class.get(cls, None)
-            if cls:
-                return self.__session.query(cls).filter_by(id=id).first()
-        return None
+        """Retrieve an object by class name and id"""
+        if cls is not None and isinstance(cls, str) and id is not None and\
+           isinstance(id, str) and cls in name2class:
+            cls = name2class[cls]
+            result = self.__session.query(cls).filter(cls.id == id).first()
+            return result
+        else:
+            return None
 
     def count(self, cls=None):
-        """Count number of objects in storage"""
-        if cls:
-            cls = name2class.get(cls, None)
-            if cls:
-                return self.__session.query(cls).count()
-        else:
-            return self.__session.query(State).count()
+        """Count the number of objects in storage"""
+        total = 0
+        if isinstance(cls, str) and cls in name2class:
+            cls = name2class[cls]
+            total = self.__session.query(cls).count()
+        elif cls is None:
+            for cls in name2class.values():
+                total += self.__session.query(cls).count()
+        return total
