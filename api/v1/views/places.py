@@ -81,14 +81,15 @@ def places_search():
     id_cities = body.get("cities", [])
     id_amenities = body.get("amenities", [])
 
+    places = []
     if not id_states and not id_cities:
         places = storage.all(Place).values()
     else:
-        states = [storage.get(State, state_id) for state_id in id_states if
-                  storage.get(State, state_id)]
-        cities = [storage.get(City, city_id) for city_id in id_cities if
-                  storage.get(City, city_id)]
-        places = []
+        states = [storage.get(State, state_id) for state_id in id_states
+                  if storage.get(State, state_id)]
+        cities = [storage.get(City, city_id) for city_id in id_cities
+                  if storage.get(City, city_id)]
+
         for state in states:
             places.extend(state.places)
         for city in cities:
